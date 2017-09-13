@@ -1,1 +1,141 @@
 ---
+- name: Create repository containment
+  file:
+    path: "{{ macos_dotfiles.containment }}"
+    state: directory
+    mode: 0700
+    owner: "{{ ansible_ssh_user }}"
+  register: macos_dotfiles_touch_log
+  changed_when: macos_dotfiles_touch_log.diff.before.state is defined and macos_dotfiles_touch_log.diff.before.state != "directory"
+
+- name: Cloning git repositories to containment
+  git:
+    repo: "{{ item.url }}"
+    dest: "{{ macos_dotfiles.containment + '/' + item.name }}"
+    update: yes
+  with_items: "{{ macos_dotfiles.repositories }}"
+  when: macos_dotfiles.repositories
+
+- name: Symlinking files
+  become: true
+  file:
+    src: "{{ macos_dotfiles.containment }}/{{ item.0.name }}/{{ item.1.file }}"
+    dest: "{{ item.1.dest | default(ansible_env.HOME + '/' + item.1.file) }}"
+    force: "{{ item.1.force | default('yes') }}"
+    group: "{{ item.1.group | default(ansible_user_gid) }}"
+    owner: "{{ item.1.owner | default(ansible_user_id) }}"
+    mode: "{{ item.1.mode | default('0644') }}"
+    state: link
+  with_subelements:
+    - "{{ macos_dotfiles.repositories }}"
+    - symlinks
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+#- name: Auto Linking Dotfiles - creating directories
+#  file:
+#    state: directory
+#    dest: "{{ ansible_env.HOME }}{{ item | replace(dotfiles_auto_symlink_dir | expanduser, '') }}"
+#    force: no
+#    recurse: yes
+#  when: dotfiles_auto_symlink_dir is defined and dotfiles_auto_symlink_dir
+#  with_lines:
+#      cd {{ dotfiles_auto_symlink_dir }} &&
+#      test -e {{ dotfiles_auto_symlink_dir }}
+#      && find {{ dotfiles_auto_symlink_dir }}
+#      -and \( -type d \)
+#      -and ! \(
+#          -name ".DS_Store"
+#          -or -name ".git"
+#          -or -path "*.git*"
+#      \)
+#      || true
+#  ignore_errors: yes
+#
+#- name: Auto Linking Dotfiles
+#  file:
+#    state: link
+#    src: "{{ item }}"
+#    dest: "{{ ansible_env.HOME }}{{ item | replace(dotfiles_auto_symlink_dir | expanduser, '') }}"
+#    force: yes
+#  when: dotfiles_auto_symlink_dir is defined and dotfiles_auto_symlink_dir
+#  with_lines:
+#      cd {{ dotfiles_auto_symlink_dir }} &&
+#      test -e {{ dotfiles_auto_symlink_dir }}
+#      && find {{ dotfiles_auto_symlink_dir }}
+#      -and \( -type f \)
+#      -and ! \(
+#          -name ".DS_Store"
+#          -or -name ".git"
+#          -or -path "*.git*"
+#          -or -name ".gitignore"
+#          -or -name ".gitmodules"
+#          -or -name "*.j2"
+#          -or -name "README.md"
+#      \)
+#      || true
+#  ignore_errors: yes
+#
+#- name: Creating dotfiles dirs
+#  file:
+#    path: "{{ item.path | default(item) }}" 
+#    state: directory
+#    force: "{{ item.force | default('yes') }}"
+#    group: "{{ item.group | default(ansible_user_gid) }}"
+#    owner: "{{ item.owner | default(ansible_user_id) }}"
+#    mode: "{{ item.mode | default('0644') }}"
+#  with_items: dotfiles_dirs
+#
+#- name: Creating dotfiles symlinks
+#  file:
+#    src: "{{ item.src }}"
+#    dest: "{{ item.dest }}"
+#    force: "{{ item.force | default('yes') }}"
+#    group: "{{ item.group | default(ansible_user_gid) }}"
+#    owner: "{{ item.owner | default(ansible_user_id) }}"
+#    mode: "{{ item.mode | default('0644') }}"
+#    state: link
+#  with_items: dotfiles_symlinks
+#
+#- name: Uploading templated dotfiles
+#  template:
+#    src: "{{ item.src | default('file.j2') }}"
+#    dest: "{{ item.dest }}"
+#    force: "{{ item.force | default('yes') }}"
+#    backup: "{{ item.backup | default('yes') }}"
+#    group: "{{ item.group | default(ansible_user_gid) }}"
+#    owner: "{{ item.owner | default(ansible_user_id) }}"
+#    mode: "{{ item.mode | default('0644') }}"
+#  with_items: dotfiles_templates
+#  no_log: True

@@ -4,6 +4,16 @@
   vars:
     DEBUG: true
     macos_dotfiles:
-      
+      containment: "{{ ansible_env.HOME + '/dotfiles' }}"
+      repositories: []
+        - {
+            name: "dotfiles",
+            url: "https://github.com/feffi/dotfiles.git",
+            symlinks: [
+              { file: "LICENSE" },
+              { file: "README" },
+              { file: "test-dir", force: yes, owner: root, group: admin, mode: "0777" }
+            ]
+          }
   roles:
     - ansible-macos-dotfiles

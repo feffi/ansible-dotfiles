@@ -23,8 +23,21 @@ All role based variables are listed below, along with default values:
 
 ```yaml
 macos_dotfiles:
-  
-
+  # Containment directory for pulled git repositories
+  containment: "{{ ansible_env.HOME + '/dotfiles' }}"
+  # Git repositories to pull
+  repositories:
+    - { # Target name of the repository
+        name: "dotfiles",
+        # URL of the repository
+        url: "https://github.com/feffi/dotfiles.git",
+        # Symlinks to create from this repository, defaults to src= repo, dest= ~
+        symlinks: [
+          { file: "LICENSE" },
+          { file: "README" },
+          { file: "test-dir", force: yes, owner: root, group: admin, mode: "0777" }
+        ]
+      }
 ```
 
 ## Dependencies
@@ -36,7 +49,21 @@ None.
     - hosts: all
       vars:
         macos_dotfiles:
-          
+          # Containment directory for pulled git repositories
+          containment: "{{ ansible_env.HOME + '/dotfiles' }}"
+          # Git repositories to pull
+          repositories:
+            - { # Target name of the repository
+                name: "dotfiles",
+                # URL of the repository
+                url: "https://github.com/feffi/dotfiles.git",
+                # Symlinks to create from this repository, defaults to src= repo, dest= ~
+                symlinks: [
+                  { file: "LICENSE" },
+                  { file: "README" },
+                  { file: "test-dir", force: yes, owner: root, group: admin, mode: "0777" }
+                ]
+              }
       roles:
         - { role: feffi.macos-dotfiles }
 ```
@@ -47,7 +74,22 @@ Or with local parameters:
       roles:
         - { role: feffi.macos-dotfiles,
             macos_dotfiles: {
-              
+              # Containment directory for pulled git repositories
+              containment: "{{ ansible_env.HOME + '/dotfiles' }}",
+              # Git repositories to pull
+              repositories: [
+                { # Target name of the repository
+                  name: "dotfiles",
+                  # URL of the repository
+                  url: "https://github.com/feffi/dotfiles.git",
+                  # Symlinks to create from this repository, defaults to src= repo, dest= ~
+                  symlinks: [
+                    { file: "LICENSE" },
+                    { file: "README" },
+                    { file: "test-dir", force: yes, owner: root, group: admin, mode: "0777" }
+                  ]
+                }
+              ]
             }
           }
 ```

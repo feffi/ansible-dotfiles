@@ -13,12 +13,13 @@ galaxy_info:
     - osx
     - dotfiles
     - git
-dependencies:
-  - { role: feffi.macos-homebrew,
-      macos_homebrew: {
-        packages: [
-          { name: "git" }
-        ],
-        taps: []
-      }
-    }
+    - config
+dependencies: []
+#  - { role: feffi.macos-homebrew,
+#      macos_homebrew: {
+#        packages: [
+#          { name: "git" }
+#        ],
+#        taps: []
+#      }
+#    }
