@@ -5,7 +5,7 @@
     DEBUG: true
     macos_dotfiles:
       containment: "{{ ansible_env.HOME + '/dotfiles' }}"
-      repositories: []
+      repositories:
         - {
             name: "dotfiles",
             url: "https://github.com/feffi/dotfiles.git",
