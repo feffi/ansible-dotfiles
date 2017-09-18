@@ -109,7 +109,7 @@
 #
 #- name: Creating dotfiles dirs
 #  file:
-#    path: "{{ item.path | default(item) }}" 
+#    path: "{{ item.path | default(item) }}"
 #    state: directory
 #    force: "{{ item.force | default('yes') }}"
 #    group: "{{ item.group | default(ansible_user_gid) }}"
