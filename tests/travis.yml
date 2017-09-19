@@ -16,4 +16,4 @@
             ]
           }
   roles:
-    - ansible-macos-dotfiles
+    - { role: ansible-macos-dotfiles }
