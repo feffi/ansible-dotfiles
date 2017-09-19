@@ -11,9 +11,12 @@ galaxy_info:
   galaxy_tags:
     - system
     - osx
+    - macos
     - dotfiles
     - git
     - config
+    - shell
+    - bash
 dependencies: []
 #  - { role: feffi.macos-homebrew,
 #      macos_homebrew: {
