@@ -11,7 +11,7 @@
 - name: Cloning git repositories to containment
   git:
     repo: "{{ item.url }}"
-    dest: "{{ macos_dotfiles.containment + '/' + item.name }}"
+    dest: "{{ macos_dotfiles.containment }}/{{ item.name }}"
     update: yes
   with_items: "{{ macos_dotfiles.repositories }}"
   when: macos_dotfiles.repositories

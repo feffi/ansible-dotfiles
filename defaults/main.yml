@@ -1,7 +1,7 @@
 ---
 macos_dotfiles:
   # Containment directory for pulled git repositories
-  containment: "{{ ansible_env.HOME + '/dotfiles' }}"
+  containment: "{{ ansible_env.HOME }}/dotfiles"
   # Git repositories to pull
   repositories: []
 #    - { # Target name of the repository
