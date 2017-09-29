@@ -4,7 +4,7 @@
     path: "{{ macos_dotfiles.containment }}"
     state: directory
     mode: 0700
-    owner: "{{ ansible_ssh_user }}"
+    owner: "{{ ansible_user_id }}"
   register: macos_dotfiles_touch_log
   changed_when: macos_dotfiles_touch_log.diff.before.state is defined and macos_dotfiles_touch_log.diff.before.state != "directory"
 
